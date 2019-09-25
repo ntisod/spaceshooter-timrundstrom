@@ -9,13 +9,9 @@ namespace SpaceShooter {
 	/// Tim Rundström, te17 för kursen Programmering 2 (2019-2020)
 	/// </summary>
 	public class Game1 : Game {
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
-
-		//variabler
-		Texture2D ship_texture;
-		Vector2 ship_vector;
-		Vector2 ship_speed;
+		GraphicsDeviceManager graphics; //Graphics
+		SpriteBatch spriteBatch; //Draw sprites
+		Player player;
 
 
 		public Game1() {
@@ -31,11 +27,6 @@ namespace SpaceShooter {
 		/// </summary>
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
-			ship_vector.X = 380;
-			ship_vector.Y = 400;
-
-			ship_speed.X = 2.5f;
-			ship_speed.Y = 4.5f;
 
 			base.Initialize();
 		}
@@ -49,7 +40,7 @@ namespace SpaceShooter {
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
-			ship_texture = this.Content.Load<Texture2D>("Sprites/ship");
+			player = new Player(Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
 		}
 
 		/// <summary>
@@ -70,13 +61,8 @@ namespace SpaceShooter {
 				Exit();
 
 			// TODO: Add your update logic here
-			ship_vector.X += ship_speed.X;
-			if (ship_vector.X > Window.ClientBounds.Width - ship_texture.Width || ship_vector.X < 0)
-				ship_speed.X *= -1;
 
-			ship_vector.Y += ship_speed.Y;
-			if (ship_vector.Y > Window.ClientBounds.Height - ship_texture.Height || ship_vector.Y < 0)
-				ship_speed.Y *= -1;
+			player.Update(Window);
 
 			base.Update(gameTime);
 		}
@@ -86,11 +72,12 @@ namespace SpaceShooter {
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime) {
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.Navy);
 
 			// TODO: Add your drawing code here
 			spriteBatch.Begin();
-			spriteBatch.Draw(ship_texture, ship_vector, Color.White);
+			//Add ship sprite
+			player.Draw(spriteBatch);
 			spriteBatch.End();
 
 			base.Draw(gameTime);
