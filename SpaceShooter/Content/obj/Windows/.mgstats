@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png","C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/bin/Windows/Sprites/ship.xnb","TextureProcessor","Texture2DContent",3474,9941,0,4081037
+"C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/coin.png","C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/bin/Windows/Sprites/coin.xnb","TextureProcessor","Texture2DContent",2922,2581,0,1566372

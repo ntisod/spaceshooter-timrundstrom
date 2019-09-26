@@ -41,10 +41,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="MovingObject.cs" />
+    <Compile Include="PhysicalObject.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PowerUp.cs" />
+    <Compile Include="PrintText.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace SpaceShooter {
 	/// <summary>
@@ -12,6 +15,10 @@ namespace SpaceShooter {
 		GraphicsDeviceManager graphics; //Graphics
 		SpriteBatch spriteBatch; //Draw sprites
 		Player player;
+		PrintText printText;
+		List<Enemy> enemies;
+		List<GoldCoin> goldCoins;
+		Texture2D goldCoinSprite;
 
 
 		public Game1() {
@@ -28,6 +35,8 @@ namespace SpaceShooter {
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
 
+			goldCoins = new List<GoldCoin>();
+
 			base.Initialize();
 		}
 
@@ -41,6 +50,19 @@ namespace SpaceShooter {
 
 			// TODO: use this.Content to load your game content here
 			player = new Player(Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f);
+			goldCoinSprite = Content.Load<Texture2D>("Sprites/coin");
+
+			//Create enemies
+			enemies = new List<Enemy>();
+			Random random = new Random();
+			Texture2D tmpSprite = Content.Load<Texture2D>("Sprites/mine");
+			for (int i = 0; i < 10; i++) {
+				int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
+				int rndY = random.Next(0, Window.ClientBounds.Height/2);
+				enemies.Add(new Enemy(tmpSprite, rndX, rndY));
+			}
+
+			printText = new PrintText(Content.Load<SpriteFont>("myFont"));
 		}
 
 		/// <summary>
@@ -63,6 +85,35 @@ namespace SpaceShooter {
 			// TODO: Add your update logic here
 
 			player.Update(Window);
+			foreach (Enemy e in enemies.ToList()) {
+				if (e.IsAlive) {
+					if (e.CheckCollision(player))
+						this.Exit();
+					e.Update(Window);
+				} else //Remove if dead
+					enemies.Remove(e);
+			}
+
+			//Generate coins
+			Random random = new Random();
+			int newCoin = random.Next(1, 200);
+			if (newCoin == 1) {
+				int randX = random.Next(0, Window.ClientBounds.Width - goldCoinSprite.Width);
+				int randY = random.Next(0, Window.ClientBounds.Height - goldCoinSprite.Height);
+				goldCoins.Add(new GoldCoin(goldCoinSprite, randX, randY, gameTime));
+			}
+
+			foreach (GoldCoin gc in goldCoins.ToList()) {
+
+				if (gc.IsAlive) {
+					gc.Update(gameTime);
+					if (gc.CheckCollision(player)) {
+						goldCoins.Remove(gc);
+						player.Points++;
+					}
+				} else
+					goldCoins.Remove(gc);
+			}
 
 			base.Update(gameTime);
 		}
@@ -76,8 +127,15 @@ namespace SpaceShooter {
 
 			// TODO: Add your drawing code here
 			spriteBatch.Begin();
-			//Add ship sprite
+			
 			player.Draw(spriteBatch);
+			foreach (Enemy e in enemies)
+				e.Draw(spriteBatch);
+
+			foreach (GoldCoin gc in goldCoins)
+				gc.Draw(spriteBatch);
+			printText.Print("Points:" + player.Points, spriteBatch, 0, 0);
+
 			spriteBatch.End();
 
 			base.Draw(gameTime);

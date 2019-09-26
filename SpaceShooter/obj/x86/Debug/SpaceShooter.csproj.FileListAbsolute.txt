@@ -22,3 +22,6 @@ C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\obj\x86\De
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\obj\x86\Debug\SpaceShooter.csproj.CopyComplete
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\obj\x86\Debug\SpaceShooter.exe
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\obj\x86\Debug\SpaceShooter.pdb
+C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\myFont.xnb
+C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\mine.xnb
+C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\coin.xnb

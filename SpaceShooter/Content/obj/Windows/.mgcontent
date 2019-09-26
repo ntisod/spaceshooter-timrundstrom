@@ -4,9 +4,15 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/myFont.spritefont</File>
+    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/coin.png</File>
+    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/mine.png</File>
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>
