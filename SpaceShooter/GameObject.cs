@@ -17,7 +17,7 @@ namespace SpaceShooter {
 		}
 
 		//Draw texture on screen
-		public void Draw(SpriteBatch spriteBatch) {
+		public virtual void Draw(SpriteBatch spriteBatch) {
 			spriteBatch.Draw(texture, position, Color.White);
 		}
 

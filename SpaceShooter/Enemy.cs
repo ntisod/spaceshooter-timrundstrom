@@ -5,22 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceShooter {
-	class Enemy : PhysicalObject {
+	abstract class Enemy : PhysicalObject {
 
-		public Enemy(Texture2D texture, float positionX, float positionY) : base(texture, positionX, positionY, 6f, 0.3f) {
+		public Enemy(Texture2D texture, float positionX, float positionY, float speedX, float speedY) : base(texture, positionX, positionY, speedX, speedY){
 		}
 
-		public void Update(GameWindow window) {
-			//Move the enemy
-			position.X += speed.X;
-			//Check if whithin bounds
-			if (position.X > window.ClientBounds.Width - texture.Width || position.X < 0)
-				speed.X *= -1; //Change direction
-			position.Y += speed.Y;
-			//Kill enemy if it reaches all the way down
-			if (position.Y > window.ClientBounds.Height - texture.Height)
-				isAlive = false;
-		}
+		public abstract void Update(GameWindow window);
 		
 
 
