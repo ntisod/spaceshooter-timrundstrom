@@ -4,13 +4,13 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/myFont.spritefont</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/bullet.png</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/coin.png</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu.png</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/mine.png</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png</File>
-    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/tripod.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/myFont.spritefont</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/bullet.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/coin.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/mine.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/tripod.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

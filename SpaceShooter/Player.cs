@@ -27,6 +27,10 @@ namespace SpaceShooter {
 			//Read keyboard inputs
 			KeyboardState keyboardState = Keyboard.GetState();
 
+			//Press esc to quit game to menu
+			if (keyboardState.IsKeyDown(Keys.Escape))
+				isAlive = false;
+
 			//Move spaceship & stop at border
 			if (position.X <= window.ClientBounds.Width - texture.Width && position.X >= 0){
 				if (keyboardState.IsKeyDown(Keys.Right))
@@ -79,6 +83,23 @@ namespace SpaceShooter {
 			spriteBatch.Draw(texture, position, Color.White);
 			foreach (Bullet b in bullets)
 				b.Draw(spriteBatch);
+		}
+
+		public void Reset(float positionX, float positionY, float speedX, float speedY) {
+			//Reset players position and speed
+			position.X = positionX;
+			position.Y = positionY;
+			speed.X = speedX;
+			speed.Y = speedY;
+
+			//Reset all bullets
+			bullets.Clear();
+			timeSinceLastBullet = 0;
+			//Reset player points
+			points = 0;
+			//Respawn player
+			isAlive = true;
+
 		}
 		
 	}

@@ -116,8 +116,10 @@ namespace SpaceShooter {
 					goldCoins.Remove(gc);
 			}
 
-			if (!player.IsAlive) //If player is dead, go to menu
+			if (!player.IsAlive) { //If player is dead, go to menu
+				Reset(window, content);
 				return State.Menu;
+			}
 			return State.Run; //Keep playing by default
 
 		}
@@ -143,5 +145,29 @@ namespace SpaceShooter {
 		public static void HighScoreDraw(SpriteBatch spriteBatch) {
 			//Draw highscore-list
 		}
+
+		public static void GenerateEnemies(GameWindow window, ContentManager content) {
+			//Generate new enemies
+			enemies.Clear();
+			Random random = new Random();
+			Texture2D tmpSprite = content.Load<Texture2D>("Sprites/mine");
+			for (int i = 0; i < 5; i++) {
+				int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+				int rndY = random.Next(0, window.ClientBounds.Height / 2);
+				enemies.Add(new Mine(tmpSprite, rndX, rndY));
+			}
+			tmpSprite = content.Load<Texture2D>("Sprites/Tripod");
+			for (int i = 0; i < 5; i++) {
+				int rndX = random.Next(0, window.ClientBounds.Width - tmpSprite.Width);
+				int rndY = random.Next(0, window.ClientBounds.Height / 2);
+				enemies.Add(new Tripod(tmpSprite, rndX, rndY));
+			}
+		}
+
+		public static void Reset(GameWindow window, ContentManager content) {
+			player.Reset(380, 400, 2.5f, 4.5f);
+			GenerateEnemies(window, content);
+		}
+
 	}
 }

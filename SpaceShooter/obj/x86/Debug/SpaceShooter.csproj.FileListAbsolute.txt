@@ -56,3 +56,4 @@ C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windo
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\bullet.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\tripod.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\menu.xnb
+C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\menu.xnb
