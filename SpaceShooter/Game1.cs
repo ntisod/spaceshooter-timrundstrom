@@ -14,13 +14,8 @@ namespace SpaceShooter {
 	public class Game1 : Game {
 		GraphicsDeviceManager graphics; //Graphics
 		SpriteBatch spriteBatch; //Draw sprites
-		Player player;
-		PrintText printText;
-		List<Enemy> enemies;
-		List<GoldCoin> goldCoins;
-		Texture2D goldCoinSprite;
 
-
+		
 		public Game1() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
@@ -35,8 +30,8 @@ namespace SpaceShooter {
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
 
-			goldCoins = new List<GoldCoin>();
-
+			GameElements.currentState = GameElements.State.Menu;
+			GameElements.Initialize();
 			base.Initialize();
 		}
 
@@ -47,28 +42,7 @@ namespace SpaceShooter {
 		protected override void LoadContent() {
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
-
-			// TODO: use this.Content to load your game content here
-			player = new Player(Content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f, Content.Load<Texture2D>("Sprites/bullet"));
-			goldCoinSprite = Content.Load<Texture2D>("Sprites/coin");
-
-			//Create enemies
-			enemies = new List<Enemy>();
-			Random random = new Random();
-			Texture2D tmpSprite = Content.Load<Texture2D>("Sprites/mine");
-			for (int i = 0; i < 5; i++) {
-				int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
-				int rndY = random.Next(0, Window.ClientBounds.Height/2);
-				enemies.Add(new Mine(tmpSprite, rndX, rndY));
-			}
-			tmpSprite = Content.Load<Texture2D>("Sprites/tripod");
-			for (int i = 0; i < 5; i++) {
-				int rndX = random.Next(0, Window.ClientBounds.Width - tmpSprite.Width);
-				int rndY = random.Next(0, Window.ClientBounds.Height / 2);
-				enemies.Add(new Tripod(tmpSprite, rndX, rndY));
-			}
-
-			printText = new PrintText(Content.Load<SpriteFont>("myFont"));
+			GameElements.LoadContent(Content, Window);
 		}
 
 		/// <summary>
@@ -85,49 +59,23 @@ namespace SpaceShooter {
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime) {
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				Exit();
-
-			// TODO: Add your update logic here
-
-			player.Update(Window, gameTime);
-			foreach (Enemy e in enemies.ToList()) {
-				foreach (Bullet b in player.Bullets) {
-					if (e.CheckCollision(b)) {
-						e.IsAlive = false;
-						b.IsAlive = false;
-						player.Points++;
-					}
-				}
-				if (e.IsAlive) {
-					if (e.CheckCollision(player))
-						this.Exit();
-					e.Update(Window);
-				} else //Remove if dead
-					enemies.Remove(e);
+			
+			switch (GameElements.currentState) {
+				case GameElements.State.Run:
+					GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
+					break;
+				case GameElements.State.Highscore:
+					GameElements.currentState = GameElements.HighScoreUpdate();
+					break;
+				case GameElements.State.Quit:
+					this.Exit();
+					break;
+				default:
+					GameElements.currentState = GameElements.MenuUpdate();
+					break;
 			}
-
-			//Generate coins
-			Random random = new Random();
-			int newCoin = random.Next(1, 200);
-			if (newCoin == 1) {
-				int randX = random.Next(0, Window.ClientBounds.Width - goldCoinSprite.Width);
-				int randY = random.Next(0, Window.ClientBounds.Height - goldCoinSprite.Height);
-				goldCoins.Add(new GoldCoin(goldCoinSprite, randX, randY, gameTime));
-			}
-
-			foreach (GoldCoin gc in goldCoins.ToList()) {
-
-				if (gc.IsAlive) {
-					gc.Update(gameTime);
-					if (gc.CheckCollision(player)) {
-						goldCoins.Remove(gc);
-						player.Points++;
-					}
-				} else
-					goldCoins.Remove(gc);
-			}
-
 			base.Update(gameTime);
 		}
 
@@ -141,13 +89,20 @@ namespace SpaceShooter {
 			// TODO: Add your drawing code here
 			spriteBatch.Begin();
 			
-			player.Draw(spriteBatch);
-			foreach (Enemy e in enemies)
-				e.Draw(spriteBatch);
-
-			foreach (GoldCoin gc in goldCoins)
-				gc.Draw(spriteBatch);
-			printText.Print("Points:" + player.Points, spriteBatch, 0, 0);
+			switch (GameElements.currentState) {
+				case GameElements.State.Run:
+					GameElements.RunDraw(spriteBatch);
+					break;
+				case GameElements.State.Highscore:
+					GameElements.HighScoreDraw(spriteBatch);
+					break;
+				case GameElements.State.Quit:
+					this.Exit();
+					break;
+				default:
+					GameElements.MenuDraw(spriteBatch);
+					break;
+			}
 
 			spriteBatch.End();
 

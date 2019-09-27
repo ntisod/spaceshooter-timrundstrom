@@ -85,7 +85,7 @@ namespace SpaceShooter {
 
 	class Bullet : PhysicalObject {
 
-		public Bullet(Texture2D texture, float positionX, float positionY) : base(texture, positionX, positionY, 0, 3f) {
+		public Bullet(Texture2D texture, float positionX, float positionY) : base(texture, positionX, positionY, 0, 5f) {
 		}
 
 		public void Update() {
