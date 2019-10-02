@@ -14,6 +14,10 @@ namespace SpaceShooter {
 	public class Game1 : Game {
 		GraphicsDeviceManager graphics; //Graphics
 		SpriteBatch spriteBatch; //Draw sprites
+		HighScore highscore;
+
+		enum State { PrintHighScore, EnterHighScore};
+		State currentState;
 
 		
 		public Game1() {
@@ -32,6 +36,7 @@ namespace SpaceShooter {
 
 			GameElements.currentState = GameElements.State.Menu;
 			GameElements.Initialize();
+			highscore = new HighScore(5);
 			base.Initialize();
 		}
 
@@ -73,7 +78,7 @@ namespace SpaceShooter {
 					this.Exit();
 					break;
 				default:
-					GameElements.currentState = GameElements.MenuUpdate();
+					GameElements.currentState = GameElements.MenuUpdate(gameTime);
 					break;
 			}
 			base.Update(gameTime);

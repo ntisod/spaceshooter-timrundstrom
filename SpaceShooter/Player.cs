@@ -8,10 +8,12 @@ using Microsoft.Xna.Framework.Input;
 namespace SpaceShooter {
 	class Player : PhysicalObject{
 		int points = 0;
+		int oldPoints = 0;
 		List<Bullet> bullets; // Ammunition
 		Texture2D bulletTexture; // 2D Sprite of bullet textures
 		double timeSinceLastBullet = 0;
 
+		public int OldPoins { get { return oldPoints; } }
 		public int Points { get { return points; } set { points = value; } }
 		public List<Bullet> Bullets { get { return bullets; } }
 
@@ -96,6 +98,7 @@ namespace SpaceShooter {
 			bullets.Clear();
 			timeSinceLastBullet = 0;
 			//Reset player points
+			oldPoints = points;
 			points = 0;
 			//Respawn player
 			isAlive = true;
