@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu/exit.png</SourceFile>
-  <SourceTime>2019-09-25T17:04:21.6896229+02:00</SourceTime>
-  <DestFile>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/bin/Windows/Content/Sprites/menu/exit.xnb</DestFile>
-  <DestTime>2019-10-03T22:02:29.4294075+02:00</DestTime>
+  <SourceFile>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/upgrade.png</SourceFile>
+  <SourceTime>2019-10-03T22:17:07.8889077+02:00</SourceTime>
+  <DestFile>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/bin/Windows/Sprites/upgrade.xnb</DestFile>
+  <DestTime>2019-10-03T22:27:27.1490986+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

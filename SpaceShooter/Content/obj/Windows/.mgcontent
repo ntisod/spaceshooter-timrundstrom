@@ -8,6 +8,7 @@
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/background.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/bullet.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/coin.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/heart.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu/exit.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu/highscore.png</File>
@@ -15,8 +16,11 @@
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/mine.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png</File>
     <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/tripod.png</File>
+    <File>C:/Users/timmi/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/upgrade.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

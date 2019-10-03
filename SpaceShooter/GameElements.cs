@@ -16,6 +16,10 @@ namespace SpaceShooter {
 		static List<Enemy> enemies;
 		static List<GoldCoin> goldCoins;
 		static Texture2D goldCoinSprite;
+		static List<Heart> hearts;
+		static Texture2D heartSprite;
+		static List<Upgrade> upgrades;
+		static Texture2D upgradeSprite;
 		static Texture2D mineSprite;
 		static Texture2D tripodSprite;
 		static PrintText printText;
@@ -29,6 +33,8 @@ namespace SpaceShooter {
 
 		public static void Initialize() {
 			goldCoins = new List<GoldCoin>();
+			hearts = new List<Heart>();
+			upgrades = new List<Upgrade>();
 		}
 
 		public static void UnloadContent() {
@@ -51,8 +57,10 @@ namespace SpaceShooter {
 			mineSprite = content.Load<Texture2D>("Sprites/mine");
 			tripodSprite = content.Load<Texture2D>("Sprites/Tripod");
 
-			//Load in coins and points HUD
+			//Load in powerups and points HUD
 			goldCoinSprite = content.Load<Texture2D>("Sprites/coin");
+			heartSprite = content.Load<Texture2D>("Sprites/heart");
+			upgradeSprite = content.Load<Texture2D>("Sprites/upgrade");
 			printText = new PrintText(content.Load<SpriteFont>("myFont"));
 		}
 
@@ -62,8 +70,8 @@ namespace SpaceShooter {
 
 		public static void MenuDraw(SpriteBatch spriteBatch) {
 			background.Draw(spriteBatch);
-			printText.Print("Highscore: " + player.HighScore, spriteBatch, 290, 100);
-			printText.Print("Score: " + player.OldPoins, spriteBatch, 290, 130);
+			printText.Print("Highscore: " + player.HighScore, spriteBatch, 250, 100);
+			printText.Print("Last Game Score: " + player.OldPoins, spriteBatch, 250, 130);
 			menu.Draw(spriteBatch);
 		}
 
@@ -100,11 +108,13 @@ namespace SpaceShooter {
 				if (e.IsAlive) {
 					//Check if enemy collides with player
 					if (e.CheckCollision(player))
-						player.IsAlive = false; //If so, kill player
+						player.Health--; // If so, damage player
 					e.Update(window);
 				} else
 					enemies.Remove(e);
 			}
+			if (player.Health == 0) // If the players health is zero then kill player
+				player.IsAlive = false;
 
 			//Generate coins randomly
 			int newCoin = random.Next(1, 300);
@@ -112,6 +122,22 @@ namespace SpaceShooter {
 				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
 				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
 				goldCoins.Add(new GoldCoin(goldCoinSprite, rndx, rndY, gameTime));
+			}
+
+			//Generate hearts randomly
+			int newHeart = random.Next(1, 10000);
+			if (newHeart == 1) {
+				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
+				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
+				hearts.Add(new Heart(heartSprite, rndx, rndY, gameTime));
+			}
+
+			//Generate upgrades randomly
+			int newUpgrade = random.Next(1, 5000);
+			if (newUpgrade == 1) {
+				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
+				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
+				upgrades.Add(new Upgrade(upgradeSprite, rndx, rndY, gameTime));
 			}
 
 			//Check if coin is collected by player
@@ -124,6 +150,30 @@ namespace SpaceShooter {
 					}
 				} else
 					goldCoins.Remove(gc);
+			}
+
+			//Check if heart is collected by player
+			foreach (Heart h in hearts.ToList()) {
+				if (h.IsAlive) {
+					h.Update(gameTime);
+					if (h.CheckCollision(player)) {
+						hearts.Remove(h);
+						player.Health++;
+					}
+				} else
+					hearts.Remove(h);
+			}
+
+			//Check if upgrade is collected by player
+			foreach (Upgrade u in upgrades.ToList()) {
+				if (u.IsAlive) {
+					u.Update(gameTime);
+					if (u.CheckCollision(player)) {
+						upgrades.Remove(u);
+						player.RateOfFire -= 50;
+					}
+				} else
+					upgrades.Remove(u);
 			}
 
 			if (!player.IsAlive) { //If player is dead, go to menu
@@ -142,7 +192,12 @@ namespace SpaceShooter {
 				e.Draw(spriteBatch);
 			foreach (GoldCoin gc in goldCoins)
 				gc.Draw(spriteBatch);
-			printText.Print("Points: " + player.Points, spriteBatch, 0, 0);
+			foreach (Heart h in hearts)
+				h.Draw(spriteBatch);
+			foreach (Upgrade u in upgrades)
+				u.Draw(spriteBatch);
+			printText.Print("Health: " + player.Health, spriteBatch, 0, 0);
+			printText.Print("Points: " + player.Points, spriteBatch, 0, 30);
 		}
 
 		public static void Reset(GameWindow window, ContentManager content) {

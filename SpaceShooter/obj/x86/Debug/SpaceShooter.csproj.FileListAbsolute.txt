@@ -65,3 +65,5 @@ C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Window
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\menu\highscore.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\menu\start.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\background.xnb
+C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\heart.xnb
+C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\upgrade.xnb

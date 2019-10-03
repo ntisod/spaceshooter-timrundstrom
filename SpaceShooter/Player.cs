@@ -9,12 +9,36 @@ using System.IO;
 namespace SpaceShooter {
 	class Player : PhysicalObject{
 		int points = 0;
+		int health = 3;
 		int oldPoints = 0;
 		int highScore = 0;
 		List<Bullet> bullets; // Ammunition
 		Texture2D bulletTexture; // 2D Sprite of bullet textures
+		int rateOfFire = 500;
 		double timeSinceLastBullet = 0;
 
+		public int Health {
+			get {
+				return health;
+			}
+			set {
+				if (value < 0)
+					health = 0;
+				else
+					health = value;
+			}
+		}
+		public int RateOfFire {
+			get {
+				return rateOfFire;
+			}
+			set {
+				if (value < 200)
+					rateOfFire = 200;
+				else
+					rateOfFire = value;
+			}
+		}
 		public int OldPoins { get { return oldPoints; } }
 		public int HighScore { get { return highScore; } }
 		public int Points { get { return points; } set { points = value; } }
@@ -67,7 +91,7 @@ namespace SpaceShooter {
 			// Player bullet controls
 			if (keyboardState.IsKeyDown(Keys.Space)) {
 				//Check if the player can shoot
-				if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + 200) {
+				if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + rateOfFire) {
 					bullets.Add(new Bullet(bulletTexture, position.X + texture.Width / 2, position.Y));
 					//Reset timeSinceLastBullet
 					timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
@@ -105,6 +129,8 @@ namespace SpaceShooter {
 			if (points > highScore)
 				highScore = points;
 			points = 0;
+			health = 3;
+			rateOfFire = 500;
 			//Respawn player
 			isAlive = true;
 
