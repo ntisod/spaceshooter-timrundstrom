@@ -14,10 +14,6 @@ namespace SpaceShooter {
 	public class Game1 : Game {
 		GraphicsDeviceManager graphics; //Graphics
 		SpriteBatch spriteBatch; //Draw sprites
-		HighScore highscore;
-
-		enum State { PrintHighScore, EnterHighScore};
-		State currentState;
 
 		
 		public Game1() {
@@ -36,7 +32,6 @@ namespace SpaceShooter {
 
 			GameElements.currentState = GameElements.State.Menu;
 			GameElements.Initialize();
-			highscore = new HighScore(5);
 			base.Initialize();
 		}
 
@@ -56,6 +51,7 @@ namespace SpaceShooter {
 		/// </summary>
 		protected override void UnloadContent() {
 			// TODO: Unload any non ContentManager content here
+			GameElements.UnloadContent();
 		}
 
 		/// <summary>
@@ -70,9 +66,6 @@ namespace SpaceShooter {
 			switch (GameElements.currentState) {
 				case GameElements.State.Run:
 					GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
-					break;
-				case GameElements.State.Highscore:
-					GameElements.currentState = GameElements.HighScoreUpdate();
 					break;
 				case GameElements.State.Quit:
 					this.Exit();
@@ -97,9 +90,6 @@ namespace SpaceShooter {
 			switch (GameElements.currentState) {
 				case GameElements.State.Run:
 					GameElements.RunDraw(spriteBatch);
-					break;
-				case GameElements.State.Highscore:
-					GameElements.HighScoreDraw(spriteBatch);
 					break;
 				case GameElements.State.Quit:
 					this.Exit();

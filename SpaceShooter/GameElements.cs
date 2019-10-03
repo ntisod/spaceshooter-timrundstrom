@@ -31,14 +31,18 @@ namespace SpaceShooter {
 			goldCoins = new List<GoldCoin>();
 		}
 
+		public static void UnloadContent() {
+			player.SaveToFile("highscore.txt");
+		}
+
 		public static void LoadContent(ContentManager content, GameWindow window) {
 			//Load menu
 			menu = new Menu((int)State.Menu);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/start"), (int)State.Run);
-			menu.AddItem(content.Load<Texture2D>("Sprites/menu/highscore"), (int)State.Highscore);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/exit"), (int)State.Quit);
 			//Load player
 			player = new Player(content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("Sprites/bullet"));
+			player.LoadFromFile("highscore.txt");
 			//Load background
 			background = new Background(content.Load<Texture2D>("Sprites/background"), window);
 
@@ -58,7 +62,7 @@ namespace SpaceShooter {
 
 		public static void MenuDraw(SpriteBatch spriteBatch) {
 			background.Draw(spriteBatch);
-			printText.Print("Highscore: " + player.Points, spriteBatch, 290, 100);
+			printText.Print("Highscore: " + player.HighScore, spriteBatch, 290, 100);
 			printText.Print("Score: " + player.OldPoins, spriteBatch, 290, 130);
 			menu.Draw(spriteBatch);
 		}
@@ -139,19 +143,6 @@ namespace SpaceShooter {
 			foreach (GoldCoin gc in goldCoins)
 				gc.Draw(spriteBatch);
 			printText.Print("Points: " + player.Points, spriteBatch, 0, 0);
-		}
-
-
-		public static State HighScoreUpdate() {
-			KeyboardState keyboardState = Keyboard.GetState();
-			// Go to menu if ESC is pressed
-			if (keyboardState.IsKeyDown(Keys.Escape))
-				return State.Menu;
-			return State.Highscore;
-		}
-
-		public static void HighScoreDraw(SpriteBatch spriteBatch) {
-			background.Draw(spriteBatch);
 		}
 
 		public static void Reset(GameWindow window, ContentManager content) {

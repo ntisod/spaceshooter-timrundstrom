@@ -4,16 +4,19 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace SpaceShooter {
 	class Player : PhysicalObject{
 		int points = 0;
 		int oldPoints = 0;
+		int highScore = 0;
 		List<Bullet> bullets; // Ammunition
 		Texture2D bulletTexture; // 2D Sprite of bullet textures
 		double timeSinceLastBullet = 0;
 
 		public int OldPoins { get { return oldPoints; } }
+		public int HighScore { get { return highScore; } }
 		public int Points { get { return points; } set { points = value; } }
 		public List<Bullet> Bullets { get { return bullets; } }
 
@@ -99,10 +102,28 @@ namespace SpaceShooter {
 			timeSinceLastBullet = 0;
 			//Reset player points
 			oldPoints = points;
+			if (points > highScore)
+				highScore = points;
 			points = 0;
 			//Respawn player
 			isAlive = true;
 
+		}
+
+		public void SaveToFile(string fileName) {
+			StreamWriter sw = new StreamWriter(fileName);
+			sw.WriteLine(highScore);
+			sw.Close();
+		}
+
+		public void LoadFromFile(string fileName) {
+			StreamReader sr = new StreamReader(fileName);
+			string score = sr.ReadLine();
+			if (score == null || score == "")
+				highScore = 0;
+			else
+				highScore = Convert.ToInt32(score);
+			sr.Close();
 		}
 		
 	}
