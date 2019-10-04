@@ -8,39 +8,46 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SpaceShooter {
 
-	class GoldCoin : PhysicalObject {
-		double timeToDie;
+	abstract class PowerUp : PhysicalObject {
+		protected double timeToDie;
 
-		public GoldCoin(Texture2D texture, float positionX, float positionY, GameTime gameTime) : base(texture, positionX, positionY, 0, 0) {
-			timeToDie = gameTime.TotalGameTime.TotalMilliseconds + 5000;
+		public PowerUp(Texture2D texture, float positionX, float positionY, GameTime gameTime, double timeToDie) : base(texture, positionX, positionY, 0, 0) {
+			this.timeToDie = gameTime.TotalGameTime.TotalMilliseconds + timeToDie;
 		}
 
-		public void Update(GameTime gameTime) {
+		public virtual void Update(GameTime gameTime) {
+		}
+
+	}
+
+	class GoldCoin : PowerUp {
+
+		public GoldCoin(Texture2D texture, float positionX, float positionY, GameTime gameTime, double timeToDie) : base(texture, positionX, positionY, gameTime, timeToDie) {
+		}
+
+		public override void Update(GameTime gameTime) {
 			if (timeToDie < gameTime.TotalGameTime.TotalMilliseconds)
 				isAlive = false;
 		}
 
 	}
 
-	class Heart : PhysicalObject {
-		double timeToDie;
+	class Heart : PowerUp {
 
-		public Heart(Texture2D texture, float positionX, float positionY, GameTime gameTime) : base(texture, positionX, positionY, 0, 0) {
-			timeToDie = gameTime.TotalGameTime.TotalMilliseconds + 7500;
+		public Heart(Texture2D texture, float positionX, float positionY, GameTime gameTime, double timeToDie) : base(texture, positionX, positionY, gameTime, timeToDie) {
 		}
-		public void Update(GameTime gameTime) {
+
+		public override void Update(GameTime gameTime) {
 			if (timeToDie < gameTime.TotalGameTime.TotalMilliseconds)
 				isAlive = false;
 		}
 	}
 
-	class Upgrade : PhysicalObject {
-		double timeToDie;
+	class Upgrade : PowerUp {
 
-		public Upgrade(Texture2D texture, float positionX, float positionY, GameTime gameTime) : base(texture, positionX, positionY, 0, 0) {
-			timeToDie = gameTime.TotalGameTime.TotalMilliseconds + 7500;
+		public Upgrade(Texture2D texture, float positionX, float positionY, GameTime gameTime, double timeToDie) : base(texture, positionX, positionY, gameTime, timeToDie) {
 		}
-		public void Update(GameTime gameTime) {
+		public override void Update(GameTime gameTime) {
 			if (timeToDie < gameTime.TotalGameTime.TotalMilliseconds)
 				isAlive = false;
 		}

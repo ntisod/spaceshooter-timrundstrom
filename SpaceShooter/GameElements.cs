@@ -14,11 +14,9 @@ namespace SpaceShooter {
 		//Variables
 		static Player player;
 		static List<Enemy> enemies;
-		static List<GoldCoin> goldCoins;
+		static List<PowerUp> powerups;
 		static Texture2D goldCoinSprite;
-		static List<Heart> hearts;
 		static Texture2D heartSprite;
-		static List<Upgrade> upgrades;
 		static Texture2D upgradeSprite;
 		static Texture2D mineSprite;
 		static Texture2D tripodSprite;
@@ -32,9 +30,7 @@ namespace SpaceShooter {
 
 
 		public static void Initialize() {
-			goldCoins = new List<GoldCoin>();
-			hearts = new List<Heart>();
-			upgrades = new List<Upgrade>();
+			powerups = new List<PowerUp>();
 		}
 
 		public static void UnloadContent() {
@@ -106,8 +102,10 @@ namespace SpaceShooter {
 				}
 				if (e.IsAlive) {
 					//Check if enemy collides with player
-					if (e.CheckCollision(player))
+					if (e.CheckCollision(player)) {
 						player.Health--; // If so, damage player
+						enemies.Remove(e);
+					}
 					e.Update(window);
 				} else
 					enemies.Remove(e);
@@ -115,64 +113,37 @@ namespace SpaceShooter {
 			if (player.Health == 0) // If the players health is zero then kill player
 				player.IsAlive = false;
 
-			//Generate coins randomly
-			int newCoin = random.Next(1, 300);
-			if (newCoin == 1) {
-				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
-				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
-				goldCoins.Add(new GoldCoin(goldCoinSprite, rndx, rndY, gameTime));
+			// TODO: Fix powerup spawnrate
+			// Generate powerups randomly
+			int newPowerUp = random.Next(1, 20000);
+			if (newPowerUp < 60) {
+				int rndx = random.Next(0, window.ClientBounds.Width - 25);
+				int rndY = random.Next(0, window.ClientBounds.Height - 25);
+				if (newPowerUp < 20) {
+					powerups.Add(new Heart(heartSprite, rndx, rndY, gameTime, 7500));
+				} else if (newPowerUp < 30) {
+					powerups.Add(new Upgrade(upgradeSprite, rndx, rndY, gameTime, 7500));
+				} else {
+					powerups.Add(new GoldCoin(goldCoinSprite, rndx, rndY, gameTime, 5000));
+				}
 			}
 
-			//Generate hearts randomly
-			int newHeart = random.Next(1, 10000);
-			if (newHeart == 1) {
-				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
-				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
-				hearts.Add(new Heart(heartSprite, rndx, rndY, gameTime));
-			}
-
-			//Generate upgrades randomly
-			int newUpgrade = random.Next(1, 5000);
-			if (newUpgrade == 1) {
-				int rndx = random.Next(0, window.ClientBounds.Width - goldCoinSprite.Width);
-				int rndY = random.Next(0, window.ClientBounds.Height - goldCoinSprite.Height);
-				upgrades.Add(new Upgrade(upgradeSprite, rndx, rndY, gameTime));
-			}
-
-			//Check if coin is collected by player
-			foreach (GoldCoin gc in goldCoins.ToList()) {
-				if (gc.IsAlive) {
-					gc.Update(gameTime);
-					if (gc.CheckCollision(player)) {
-						goldCoins.Remove(gc);
-						player.Points++;
+			// Check if powerup is collected by player
+			foreach (PowerUp p in powerups.ToList()) {
+				if (p.IsAlive) {
+					p.Update(gameTime);
+					if (p.CheckCollision(player)) {
+						powerups.Remove(p);
+						//Set powerup changes
+						if (p is Heart)
+							player.Health++;
+						if (p is GoldCoin)
+							player.Points++;
+						if (p is Upgrade)
+							player.RateOfFire -= 50;
 					}
 				} else
-					goldCoins.Remove(gc);
-			}
-
-			//Check if heart is collected by player
-			foreach (Heart h in hearts.ToList()) {
-				if (h.IsAlive) {
-					h.Update(gameTime);
-					if (h.CheckCollision(player)) {
-						hearts.Remove(h);
-						player.Health++;
-					}
-				} else
-					hearts.Remove(h);
-			}
-
-			//Check if upgrade is collected by player
-			foreach (Upgrade u in upgrades.ToList()) {
-				if (u.IsAlive) {
-					u.Update(gameTime);
-					if (u.CheckCollision(player)) {
-						upgrades.Remove(u);
-						player.RateOfFire -= 50;
-					}
-				} else
-					upgrades.Remove(u);
+					powerups.Remove(p);
 			}
 
 			if (!player.IsAlive) { //If player is dead, go to menu
@@ -189,12 +160,8 @@ namespace SpaceShooter {
 			player.Draw(spriteBatch);
 			foreach (Enemy e in enemies)
 				e.Draw(spriteBatch);
-			foreach (GoldCoin gc in goldCoins)
-				gc.Draw(spriteBatch);
-			foreach (Heart h in hearts)
-				h.Draw(spriteBatch);
-			foreach (Upgrade u in upgrades)
-				u.Draw(spriteBatch);
+			foreach (PowerUp p in powerups)
+				p.Draw(spriteBatch);
 			printText.Print("Health: " + player.Health, spriteBatch, 0, 0);
 			printText.Print("Points: " + player.Points, spriteBatch, 0, 30);
 		}
@@ -202,7 +169,7 @@ namespace SpaceShooter {
 		public static void Reset(GameWindow window, ContentManager content) {
 			player.Reset(380, 400, 2.5f, 4.5f);
 			enemies.Clear();
-			goldCoins.Clear();
+			powerups.Clear();
 		}
 
 	}
