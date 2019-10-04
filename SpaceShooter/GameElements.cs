@@ -70,8 +70,7 @@ namespace SpaceShooter {
 
 		public static void MenuDraw(SpriteBatch spriteBatch) {
 			background.Draw(spriteBatch);
-			printText.Print("Highscore: " + player.HighScore, spriteBatch, 250, 100);
-			printText.Print("Last Game Score: " + player.OldPoins, spriteBatch, 250, 130);
+			printText.Print("Highscore: " + player.HighScore, spriteBatch, 290, 100);
 			menu.Draw(spriteBatch);
 		}
 

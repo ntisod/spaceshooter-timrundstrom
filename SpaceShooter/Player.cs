@@ -10,10 +10,9 @@ namespace SpaceShooter {
 	class Player : PhysicalObject{
 		int points = 0;
 		int health = 3;
-		int oldPoints = 0;
-		int highScore = 0;
+		int highScore;
 		List<Bullet> bullets; // Ammunition
-		Texture2D bulletTexture; // 2D Sprite of bullet textures
+		Texture2D bulletGfx; // 2D Sprite of bullet textures
 		int rateOfFire = 500;
 		double timeSinceLastBullet = 0;
 
@@ -39,15 +38,14 @@ namespace SpaceShooter {
 					rateOfFire = value;
 			}
 		}
-		public int OldPoins { get { return oldPoints; } }
 		public int HighScore { get { return highScore; } }
 		public int Points { get { return points; } set { points = value; } }
 		public List<Bullet> Bullets { get { return bullets; } }
 
 		//Contructor
-		public Player(Texture2D texture, float positionX, float positionY, float speedX, float speedY, Texture2D bulletTexture) : base(texture, positionX, positionY, speedX, speedY){
+		public Player(Texture2D texture, float positionX, float positionY, float speedX, float speedY, Texture2D bulletGfx) : base(texture, positionX, positionY, speedX, speedY){
 			bullets = new List<Bullet>();
-			this.bulletTexture = bulletTexture;
+			this.bulletGfx = bulletGfx;
 		}
 
 		//Update(), receives keyboard inputs and tracks movement.
@@ -92,7 +90,7 @@ namespace SpaceShooter {
 			if (keyboardState.IsKeyDown(Keys.Space)) {
 				//Check if the player can shoot
 				if (gameTime.TotalGameTime.TotalMilliseconds > timeSinceLastBullet + rateOfFire) {
-					bullets.Add(new Bullet(bulletTexture, position.X + texture.Width / 2, position.Y));
+					bullets.Add(new Bullet(bulletGfx, position.X + texture.Width / 2, position.Y));
 					//Reset timeSinceLastBullet
 					timeSinceLastBullet = gameTime.TotalGameTime.TotalMilliseconds;
 				}
@@ -124,8 +122,6 @@ namespace SpaceShooter {
 			//Reset all bullets
 			bullets.Clear();
 			timeSinceLastBullet = 0;
-			//Reset player points
-			oldPoints = points;
 			if (points > highScore)
 				highScore = points;
 			points = 0;
