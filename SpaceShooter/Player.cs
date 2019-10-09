@@ -15,6 +15,8 @@ namespace SpaceShooter {
 		Texture2D bulletGfx; // 2D Sprite of bullet textures
 		int rateOfFire = 500;
 		double timeSinceLastBullet = 0;
+		bool hurt = false;
+		double hurtTimer;
 
 		public int Health {
 			get {
@@ -23,6 +25,8 @@ namespace SpaceShooter {
 			set {
 				if (value < 0)
 					health = 0;
+				else if (value > 5)
+					health = 5;
 				else
 					health = value;
 			}
@@ -104,10 +108,17 @@ namespace SpaceShooter {
 					bullets.Remove(b);
 			}
 
+			if (hurtTimer < gameTime.TotalGameTime.TotalMilliseconds)
+				hurt = false;
+
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
-			spriteBatch.Draw(texture, position, Color.White);
+			Color color = Color.White;
+			if (hurt)
+				color = Color.Red;
+
+			spriteBatch.Draw(texture, position, color);
 			foreach (Bullet b in bullets)
 				b.Draw(spriteBatch);
 		}
@@ -130,6 +141,12 @@ namespace SpaceShooter {
 			//Respawn player
 			isAlive = true;
 
+		}
+
+		public void Hurt(GameTime gameTime) {
+			hurtTimer = gameTime.TotalGameTime.TotalMilliseconds + 500;
+			hurt = true;
+			Health--;
 		}
 
 		public void SaveToFile(string fileName) {

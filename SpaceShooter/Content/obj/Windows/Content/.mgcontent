@@ -15,10 +15,12 @@
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/menu/start.png</File>
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/mine.png</File>
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/ship.png</File>
+    <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/stone.png</File>
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/tripod.png</File>
     <File>C:/Users/elev/Documents/GitHub/spaceshooter-timrundstrom/SpaceShooter/Content/Sprites/upgrade.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

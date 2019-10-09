@@ -20,6 +20,7 @@ namespace SpaceShooter {
 		static Texture2D upgradeSprite;
 		static Texture2D mineSprite;
 		static Texture2D tripodSprite;
+		static Texture2D stoneSprite;
 		static PrintText printText;
 		static Menu menu;
 		static Background background;
@@ -50,6 +51,7 @@ namespace SpaceShooter {
 
 			//Load in enemies
 			enemies = new List<Enemy>();
+			stoneSprite = content.Load<Texture2D>("Sprites/stone");
 			mineSprite = content.Load<Texture2D>("Sprites/mine");
 			tripodSprite = content.Load<Texture2D>("Sprites/Tripod");
 
@@ -78,16 +80,21 @@ namespace SpaceShooter {
 
 			//Generate enemies randomly
 			Random random = new Random();
-			int newEnemy = random.Next(1, 100);
+			int newEnemy = random.Next(1, 150);
 			if (newEnemy == 1) {
-				int rndX = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
-				int Y = 0 - mineSprite.Height * 2;
-				enemies.Add(new Mine(mineSprite, rndX, Y));
+				int rndx = random.Next(0, window.ClientBounds.Width - mineSprite.Width);
+				int rndy = 0 - mineSprite.Height * 2;
+				enemies.Add(new Mine(mineSprite, rndx, rndy));
 			}
 			if (newEnemy == 2) {
-				int rndX = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
-				int Y = 0 - mineSprite.Height * 2;
-				enemies.Add(new Tripod(tripodSprite, rndX, Y));
+				int rndx = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
+				int rndy = 0 - mineSprite.Height * 2;
+				enemies.Add(new Tripod(tripodSprite, rndx, rndy));
+			}
+			if (newEnemy == 3) {
+				int rndx = random.Next(0, window.ClientBounds.Width - tripodSprite.Width);
+				int rndy = 0 - stoneSprite.Height * 2;
+				enemies.Add(new Stone(stoneSprite, rndx, rndy));
 			}
 
 			//Go through enemies
@@ -97,13 +104,16 @@ namespace SpaceShooter {
 					if (e.CheckCollision(b)) {
 						e.IsAlive = false;
 						b.IsAlive = false;
-						player.Points++;
+						if (!(e is Stone)) {
+							player.Points++;
+							Drop(e.X, e.Y, gameTime);
+						}
 					}
 				}
 				if (e.IsAlive) {
 					//Check if enemy collides with player
 					if (e.CheckCollision(player)) {
-						player.Health--; // If so, damage player
+						player.Hurt(gameTime); // If so, damage player
 						enemies.Remove(e);
 					}
 					e.Update(window);
@@ -113,21 +123,16 @@ namespace SpaceShooter {
 			if (player.Health == 0) // If the players health is zero then kill player
 				player.IsAlive = false;
 
-			// TODO: Fix powerup spawnrate
+			// TODO: Make enemies drop hearts / upgrades
 			// Generate powerups randomly
-			int newPowerUp = random.Next(1, 20000);
-			if (newPowerUp < 60) {
+			int newPowerUp = random.Next(1, 1000);
+			if (newPowerUp < 3) {
 				int rndx = random.Next(0, window.ClientBounds.Width - 25);
 				int rndY = random.Next(0, window.ClientBounds.Height - 25);
-				if (newPowerUp < 20) {
-					powerups.Add(new Heart(heartSprite, rndx, rndY, gameTime, 7500));
-				} else if (newPowerUp < 30) {
-					powerups.Add(new Upgrade(upgradeSprite, rndx, rndY, gameTime, 7500));
-				} else {
-					powerups.Add(new GoldCoin(goldCoinSprite, rndx, rndY, gameTime, 5000));
-				}
+				powerups.Add(new GoldCoin(goldCoinSprite, rndx, rndY, gameTime, 5000));
 			}
-
+			
+			
 			// Check if powerup is collected by player
 			foreach (PowerUp p in powerups.ToList()) {
 				if (p.IsAlive) {
@@ -171,6 +176,16 @@ namespace SpaceShooter {
 			enemies.Clear();
 			powerups.Clear();
 		}
+
+		static void Drop(float positionX, float positionY, GameTime gameTime) {
+			Random random = new Random();
+			int dropChance = random.Next(1, 100);
+			if (dropChance < 20 && player.Health < 5)
+				powerups.Add(new Heart(heartSprite, positionX, positionY, gameTime, 7500));
+			if (dropChance >= 20 && dropChance < 30 && player.RateOfFire != 200)
+				powerups.Add(new Upgrade(upgradeSprite, positionX, positionY, gameTime, 7500));
+		}
+		
 
 	}
 }

@@ -69,3 +69,4 @@ C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windo
 C:\Users\timmi\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\upgrade.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\heart.xnb
 C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\upgrade.xnb
+C:\Users\elev\Documents\GitHub\spaceshooter-timrundstrom\SpaceShooter\bin\Windows\x86\Debug\Content\Sprites\stone.xnb
