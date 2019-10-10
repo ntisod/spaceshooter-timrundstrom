@@ -10,7 +10,6 @@ namespace SpaceShooter {
 	class Player : PhysicalObject{
 		int points = 0;
 		int health = 3;
-		int highScore;
 		List<Bullet> bullets; // Ammunition
 		Texture2D bulletGfx; // 2D Sprite of bullet textures
 		int rateOfFire = 500;
@@ -42,7 +41,6 @@ namespace SpaceShooter {
 					rateOfFire = value;
 			}
 		}
-		public int HighScore { get { return highScore; } }
 		public int Points { get { return points; } set { points = value; } }
 		public List<Bullet> Bullets { get { return bullets; } }
 
@@ -133,8 +131,6 @@ namespace SpaceShooter {
 			//Reset all bullets
 			bullets.Clear();
 			timeSinceLastBullet = 0;
-			if (points > highScore)
-				highScore = points;
 			points = 0;
 			health = 3;
 			rateOfFire = 500;
@@ -147,22 +143,6 @@ namespace SpaceShooter {
 			hurtTimer = gameTime.TotalGameTime.TotalMilliseconds + 500;
 			hurt = true;
 			Health--;
-		}
-
-		public void SaveToFile(string fileName) {
-			StreamWriter sw = new StreamWriter(fileName);
-			sw.WriteLine(highScore);
-			sw.Close();
-		}
-
-		public void LoadFromFile(string fileName) {
-			StreamReader sr = new StreamReader(fileName);
-			string score = sr.ReadLine();
-			if (score == null || score == "")
-				highScore = 0;
-			else
-				highScore = Convert.ToInt32(score);
-			sr.Close();
 		}
 		
 	}

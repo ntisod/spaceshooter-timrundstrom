@@ -13,20 +13,24 @@ namespace SpaceShooter {
 
 		//Variables
 		static Player player;
+
 		static List<Enemy> enemies;
 		static List<PowerUp> powerups;
+
 		static Texture2D goldCoinSprite;
 		static Texture2D heartSprite;
 		static Texture2D upgradeSprite;
 		static Texture2D mineSprite;
 		static Texture2D tripodSprite;
 		static Texture2D stoneSprite;
+
 		static PrintText printText;
 		static Menu menu;
 		static Background background;
+		static HighScore hs;
 
 		//Properties
-		public enum State { Menu, Run, Killscreen, Highscore, Quit };
+		public enum State { Menu, Run, Highscore, Quit };
 		public static State currentState;
 
 
@@ -35,19 +39,22 @@ namespace SpaceShooter {
 		}
 
 		public static void UnloadContent() {
-			player.SaveToFile("highscore.txt");
+			hs.SaveToFile("highscore.txt");
 		}
 
 		public static void LoadContent(ContentManager content, GameWindow window) {
 			//Load menu
 			menu = new Menu((int)State.Menu);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/start"), (int)State.Run);
+			menu.AddItem(content.Load<Texture2D>("Sprites/menu/highscore"), (int)State.Highscore);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/exit"), (int)State.Quit);
 			//Load player
 			player = new Player(content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("Sprites/bullet"));
-			player.LoadFromFile("highscore.txt");
 			//Load background
 			background = new Background(content.Load<Texture2D>("Sprites/background"), window);
+			//Load Highscore
+			hs = new HighScore(5);
+			hs.LoadFromFile("highscore.txt");
 
 			//Load in enemies
 			enemies = new List<Enemy>();
@@ -68,7 +75,6 @@ namespace SpaceShooter {
 
 		public static void MenuDraw(SpriteBatch spriteBatch) {
 			background.Draw(spriteBatch);
-			printText.Print("Highscore: " + player.HighScore, spriteBatch, 290, 100);
 			menu.Draw(spriteBatch);
 		}
 

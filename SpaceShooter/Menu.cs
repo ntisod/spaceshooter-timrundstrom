@@ -45,7 +45,7 @@ namespace SpaceShooter {
 		public void AddItem(Texture2D itemTexture, int state) {
 			//Height of item
 			float X = 380 - itemTexture.Width / 2;
-			float Y = 200 + currentHeight;
+			float Y = 100 + currentHeight;
 			//Set new currentHeight for next item
 			currentHeight += itemTexture.Height + 20;
 			
