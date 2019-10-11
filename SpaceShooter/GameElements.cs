@@ -23,6 +23,7 @@ namespace SpaceShooter {
 		static Texture2D mineSprite;
 		static Texture2D tripodSprite;
 		static Texture2D stoneSprite;
+		static Texture2D hsGfx;
 
 		static PrintText printText;
 		static Menu menu;
@@ -30,7 +31,7 @@ namespace SpaceShooter {
 		static HighScore hs;
 
 		//Properties
-		public enum State { Menu, Run, Highscore, Quit };
+		public enum State { Menu, Run, Highscore, NewHighscore, Quit };
 		public static State currentState;
 
 
@@ -46,7 +47,8 @@ namespace SpaceShooter {
 			//Load menu
 			menu = new Menu((int)State.Menu);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/start"), (int)State.Run);
-			menu.AddItem(content.Load<Texture2D>("Sprites/menu/highscore"), (int)State.Highscore);
+			hsGfx = content.Load<Texture2D>("Sprites/menu/highscore");
+			menu.AddItem(hsGfx, (int)State.Highscore);
 			menu.AddItem(content.Load<Texture2D>("Sprites/menu/exit"), (int)State.Quit);
 			//Load player
 			player = new Player(content.Load<Texture2D>("Sprites/ship"), 380, 400, 2.5f, 4.5f, content.Load<Texture2D>("Sprites/bullet"));
@@ -70,13 +72,53 @@ namespace SpaceShooter {
 		}
 
 		public static State MenuUpdate(GameTime gameTime) {
-			return (State)menu.Update(gameTime);
+			return (State)menu.Update(gameTime); // Get the new state from Update method in menu object
 		}
 
 		public static void MenuDraw(SpriteBatch spriteBatch) {
 			background.Draw(spriteBatch);
-			menu.Draw(spriteBatch);
+			menu.Draw(spriteBatch); // Draw menu with Update method in menu object
 		}
+
+		public static State HighScoreUpdate(GameTime gameTime) {
+			KeyboardState keyboardState = Keyboard.GetState();
+
+			if (keyboardState.IsKeyDown(Keys.Escape)) //If ESC pressed
+				return State.Menu; // Go to menu
+			return State.Highscore; // keep Highscore running as default
+		}
+
+		public static void HighScoreDraw(SpriteBatch spriteBatch, GameWindow window) {
+			background.Draw(spriteBatch); // Draw background
+
+			printText.Print("***HIGHSCORES***", spriteBatch, 250, 100); // Draw title
+			for (int i = 0; i < hs.hsItems.Count; i++) {
+				string text = $"{i+1}. {hs.hsItems[i].Name} : {hs.hsItems[i].Points}p"; // Format a HSItem
+				printText.Print(text, spriteBatch, 300, 165 + (i * 30)); // Draw HSItem to screen
+			}
+		}
+
+		public static State NewHighScoreUpdate(GameTime gameTime, ContentManager content, GameWindow window) {
+			hs.Update(gameTime); // Execute update method in hs object
+
+			KeyboardState keyboardState = Keyboard.GetState();
+			if (keyboardState.IsKeyDown(Keys.Enter)) { // If enter is pressed
+				hs.Add(player.Points); // Add name + score to highscorelist
+				Reset(window, content); // Reset the game and go to main menu
+				// Set a cooldown on the menu so that game doesn't automatically start again
+				menu.lastChange = gameTime.TotalGameTime.TotalMilliseconds; 
+				return State.Menu;
+			}
+			return State.NewHighscore; // Keep newhighscore running as default
+		}
+
+		public static void NewHighScoreDraw(SpriteBatch spriteBatch) {
+			background.Draw(spriteBatch); //Set background
+			printText.Print("***NEW HIGHSCORE***", spriteBatch, 200, 10); // Draw title 
+			string text = hs.GetName() + $" : {player.Points}"; // Get name and score
+			printText.Print(text, spriteBatch, 340, 200); //Print new name and score
+		}
+
 
 		public static State RunUpdate(ContentManager content, GameWindow window, GameTime gameTime) {
 			//Update player position
@@ -158,6 +200,8 @@ namespace SpaceShooter {
 			}
 
 			if (!player.IsAlive) { //If player is dead, go to menu
+				if (hs.hsItems.Count < 5 || player.Points > hs.hsItems[hs.hsItems.Count - 1].Points)
+					return State.NewHighscore;
 				Reset(window, content);
 				return State.Menu;
 			}
@@ -166,7 +210,7 @@ namespace SpaceShooter {
 		}
 
 		public static void RunDraw(SpriteBatch spriteBatch) {
-			//Draw player, enemies, goldcoins and points HUD to screen
+			//Draw background, player, enemies, goldcoins, health and points to screen
 			background.Draw(spriteBatch);
 			player.Draw(spriteBatch);
 			foreach (Enemy e in enemies)
@@ -178,17 +222,19 @@ namespace SpaceShooter {
 		}
 
 		public static void Reset(GameWindow window, ContentManager content) {
-			player.Reset(380, 400, 2.5f, 4.5f);
-			enemies.Clear();
-			powerups.Clear();
+			player.Reset(380, 400, 2.5f, 4.5f); //Reset player position
+			enemies.Clear(); // Remove remaining enemies
+			powerups.Clear(); // Remove remaining drops (coins, hearts, upgrades etc.)
 		}
 
 		static void Drop(float positionX, float positionY, GameTime gameTime) {
 			Random random = new Random();
-			int dropChance = random.Next(1, 100);
-			if (dropChance < 20 && player.Health < 5)
+			int dropChance = random.Next(1, 100); // Generate dropchance
+			if (dropChance < 20 && player.Health < 5) // 20% chance for a heart to drop, if playerhealth is under 5
 				powerups.Add(new Heart(heartSprite, positionX, positionY, gameTime, 7500));
-			if (dropChance >= 20 && dropChance < 30 && player.RateOfFire != 200)
+
+			// 10% chance for an upgrade to drop, if firerate isn't 200
+			if (dropChance >= 20 && dropChance < 30 && player.RateOfFire != 200) 
 				powerups.Add(new Upgrade(upgradeSprite, positionX, positionY, gameTime, 7500));
 		}
 		

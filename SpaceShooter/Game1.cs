@@ -30,6 +30,7 @@ namespace SpaceShooter {
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
 
+			// Set states and initialize through GameElements class
 			GameElements.currentState = GameElements.State.Menu;
 			GameElements.Initialize();
 			base.Initialize();
@@ -42,6 +43,7 @@ namespace SpaceShooter {
 		protected override void LoadContent() {
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+			//Load content through GameElements
 			GameElements.LoadContent(Content, Window);
 		}
 
@@ -63,14 +65,21 @@ namespace SpaceShooter {
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				Exit();
 			
+			//Get current state and execute said states update method
 			switch (GameElements.currentState) {
 				case GameElements.State.Run:
 					GameElements.currentState = GameElements.RunUpdate(Content, Window, gameTime);
 					break;
+				case GameElements.State.Highscore:
+					GameElements.currentState = GameElements.HighScoreUpdate(gameTime);
+					break;
+				case GameElements.State.NewHighscore:
+					GameElements.currentState = GameElements.NewHighScoreUpdate(gameTime, Content, Window);
+					break;
 				case GameElements.State.Quit:
 					this.Exit();
 					break;
-				default:
+				default: //By default, set state as menu (Game start).
 					GameElements.currentState = GameElements.MenuUpdate(gameTime);
 					break;
 			}
@@ -83,18 +92,24 @@ namespace SpaceShooter {
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(Color.Navy);
-
-			// TODO: Add your drawing code here
+			
 			spriteBatch.Begin();
 			
+			//Get current state and execute said states draw method
 			switch (GameElements.currentState) {
 				case GameElements.State.Run:
 					GameElements.RunDraw(spriteBatch);
 					break;
+				case GameElements.State.Highscore:
+					GameElements.HighScoreDraw(spriteBatch, Window);
+					break;
+				case GameElements.State.NewHighscore:
+					GameElements.NewHighScoreDraw(spriteBatch);
+					break;
 				case GameElements.State.Quit:
 					this.Exit();
 					break;
-				default:
+				default: //By default, draw menu (game start)
 					GameElements.MenuDraw(spriteBatch);
 					break;
 			}

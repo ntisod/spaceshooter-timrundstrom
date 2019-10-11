@@ -34,7 +34,7 @@ namespace SpaceShooter {
 		int selected = 0; //Fist option in the list is selected
 
 		float currentHeight = 0; //Draw menu at different heights
-		double lastChange = 0; //Stop selection spamming, by pausing the keyboard inputs
+		public double lastChange = 0; //Stop selection spamming, by pausing the keyboard inputs
 		int defaultMenuState;
 
 		public Menu(int defaultMenuState) {
@@ -70,13 +70,15 @@ namespace SpaceShooter {
 					if (selected < 0) //If it goes over the limit, loop back around
 						selected = menu.Count - 1;
 				}
+
 				//Reset lastChange
 				lastChange = gameTime.TotalGameTime.TotalMilliseconds;
 
 			}
 			//Choose the selected menuitem
-			if (keyboardState.IsKeyDown(Keys.Enter))
+			if (keyboardState.IsKeyDown(Keys.Enter) && lastChange + 75 < gameTime.TotalGameTime.TotalMilliseconds)
 				return menu[selected].State;
+
 			//If none was chosen, then stay in menu
 			return defaultMenuState;
 		}

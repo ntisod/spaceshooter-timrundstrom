@@ -11,7 +11,7 @@ namespace SpaceShooter {
 		public PrintText(SpriteFont font) {
 			this.font = font;
 		}
-
+		
 		public void Print(string text, SpriteBatch spriteBatch, int positionX, int positionY) {
 			spriteBatch.DrawString(font, text, new Vector2(positionX, positionY), Color.White);
 		}
